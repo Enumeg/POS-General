@@ -1,0 +1,23 @@
+﻿<Application x:Class="POS.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/POS;component/Styles/Background.xaml" />
+                <ResourceDictionary Source="/POS;component/Styles/Button.xaml" />
+                <ResourceDictionary Source="/POS;component/Styles/CheckBox.xaml" />
+                <ResourceDictionary Source="/POS;component/Styles/ComboBox.xaml" />
+                <ResourceDictionary Source="/POS;component/Styles/ContextMenu.xaml" />
+                <ResourceDictionary Source="/POS;component/Styles/DataGrid.xaml" />
+                <ResourceDictionary Source="/POS;component/Styles/DateTimePicker.xaml" />
+                <ResourceDictionary Source="/POS;component/Styles/EditPanel.xaml" />
+                <ResourceDictionary Source="/POS;component/Styles/Label.xaml" />
+                <ResourceDictionary Source="/POS;component/Styles/ListBox.xaml" />
+                <ResourceDictionary Source="/POS;component/Styles/Tab.xaml" />
+                <ResourceDictionary Source="/POS;component/Styles/TextBlock.xaml" />
+                <ResourceDictionary Source="/POS;component/Styles/TextBox.xaml" />
+                <ResourceDictionary Source="/POS;component/Styles/TimePicker.xaml" />
+                <ResourceDictionary Source="/POS;component/Styles/Window.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

@@ -1,0 +1,31 @@
+﻿<Window x:Class="POS.Cashier_Window" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Height="200"
+        Width="992" WindowState="Maximized" Background="#FF021645" Loaded="Window_Loaded">
+    <Grid Name="Main_GD" FlowDirection="RightToLeft">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Frame Grid.Row="2" NavigationUIVisibility="Hidden" Name="Frame" BorderThickness="2,0,2,2" Navigated="Frame_Navigated">
+            <Frame.Background>
+                <ImageBrush ImageSource="/POS;component/Images/barcode.jpg" />
+            </Frame.Background>
+        </Frame>
+        <Border BorderBrush="Black" BorderThickness="2" Padding="0,2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="0" />
+                    <ColumnDefinition Width="0" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Style="{StaticResource Tabs}" Click="Button_Click_1" Name="sell" Content="بيع" Tag="/POS;component/Images/scorm.ico" />
+                <Button Grid.Column="1" Style="{StaticResource Tabs}" Click="Button_Click_2" Name="sell_back" Content="مرتجع" Tag="/POS;component/Images/Applicatio.ico" />
+                <Button Grid.Column="2" Style="{StaticResource Tabs}" Click="Button_Click_3" Name="outcome" Content="مصروفات" Tag="/POS;component/Images/checklist.ico" />
+                <Button Grid.Column="3" Style="{StaticResource Tabs}" Click="Button_Click_4" Name="Users" Content="Users" Tag="/POS;component/Images/Users.ico" />
+                <Button Grid.Column="4" Style="{StaticResource Tabs}" Click="Button_Click_5" Name="Refresh" Content="Refresh"
+                        Tag="/POS;component/Images/Counterclockwise-arrow.ico" />
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

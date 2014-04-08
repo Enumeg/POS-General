@@ -1,0 +1,30 @@
+﻿<Window x:Class="POS.Add_Update_Attendence" 
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:ex="http://schemas.xceed.com/wpf/xaml/toolkit"
+        Width="350" WindowStartupLocation="CenterScreen" 
+        Style="{StaticResource Default_Window}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Column="0" Grid.Row="0" Style="{StaticResource Label_TextBlock}" Text="المــوظـــف :" />
+        <TextBlock Grid.Column="0" Grid.Row="1" Style="{StaticResource Label_TextBlock}" Text="التــــاريــــخ :" />
+        <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource Label_TextBlock}" Text="الحضـــــور :" />
+        <TextBlock Grid.Column="0" Grid.Row="3" Style="{StaticResource Label_TextBlock}" Text="الإنصراف :" />
+        <ComboBox Grid.Column="1" Grid.Row="0" Style="{StaticResource  Edit_ComboBox}" Name="Employees_CB" />
+        <ex:DateTimePicker Grid.Column="1" Grid.Row="1" Style="{StaticResource  Edit_DateTimePicker}" Name="Date_DTP" />
+        <ex:TimePicker Grid.Column="1" Grid.Row="2" FormatString="hh:mm tt" Style="{StaticResource  Edit_TimePicker}" Name="Attend_DTP" />
+        <ex:TimePicker Grid.Column="1" Grid.Row="3" FormatString="hh:mm tt" Style="{StaticResource  Edit_TimePicker}" Name="Leave_DTP" />
+        <CheckBox Grid.Column="0" Grid.Row="4" Style="{StaticResource New_CheckBox}" Content="جديد" Name="New" />
+        <Button Grid.Column="1" Grid.Row="4" Content="حفظ" Click="Add_Update_Attendence_Click"/>
+    </Grid>
+</Window>
