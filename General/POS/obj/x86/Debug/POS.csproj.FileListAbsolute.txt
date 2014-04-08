@@ -91,3 +91,6 @@ G:\My Projects\VS 2010\POS\POS\obj\x86\Debug\Attendence.g.cs
 G:\My Projects\VS 2010\POS\POS\bin\Debug\MySql.Data.dll
 G:\My Projects\VS 2010\POS\POS\obj\x86\Debug\POS.csprojResolveAssemblyReference.cache
 G:\My Projects\VS 2010\POS\POS\obj\x86\Debug\POS.csproj.GenerateResource.Cache
+D:\Enum\POS-General\General\POS\bin\Debug\POS.exe.config
+D:\Enum\POS-General\General\POS\obj\x86\Debug\POS.exe
+D:\Enum\POS-General\General\POS\obj\x86\Debug\POS.pdb
