@@ -35,7 +35,7 @@ namespace POS
                 //{
                 //    Application.Current.Shutdown();
                 //}
-                Window w = new Login();
+                Window w = new Managent();
                 w.ShowDialog();
             }
             catch

@@ -48,17 +48,19 @@ namespace POS
             {
                 DB db = new DB();
 
-                db.AddCondition("trs_date", From_DTP.Value.Value.Date, false, ">=", "SD");
-                db.AddCondition("trs_date", To_DTP.Value.Value.Date, false, "<=", "ED");
+                db.AddCondition("pay_date", From_DTP.Value.Value.Date, false, ">=", "SD");
+                db.AddCondition("pay_date", To_DTP.Value.Value.Date, false, "<=", "ED");
 
-                DataSet ds = db.SelectSet(@"select trs_id,trs_no,trs_date,trs_paid,per_name from transactions join persons on per_id=trs_id_1 where trs_trn_id=7 and trs_date>=@SD and trs_date<=@ED;
-                                            select trs_id,trs_no,trs_date,trs_paid,per_name from transactions join persons on per_id=trs_id_1 where trs_trn_id=8 and trs_date>=@SD and trs_date<=@ED");
+                DataSet ds = db.SelectSet(@"select * from payments p join persons pp on p.pay_per_id=pp.per_id where pay_trn_id=5 and pay_date>=@SD and pay_date<=@ED;
+                                            select * from payments p join persons pp on p.pay_per_id=pp.per_id where pay_trn_id=6 and pay_date>=@SD and pay_date<=@ED");
 
-                ds.Tables[0].Rows.Add(null, null, null, ds.Tables[0].Compute("Sum(trs_paid)", ""), "الاجمالى");
-                ds.Tables[1].Rows.Add(null, null, null, ds.Tables[1].Compute("Sum(trs_paid)", ""), "الاجمالى");
+                ds.Tables[0].Rows.Add( null, null, ds.Tables[0].Compute("Sum(pay_value)", ""), "الاجمالى");
+                ds.Tables[1].Rows.Add( null, null, ds.Tables[1].Compute("Sum(pay_value)", ""), "الاجمالى");
 
                 Income_DG.ItemsSource = ds.Tables[0].DefaultView;
+
                 Outcome_DG.ItemsSource = ds.Tables[1].DefaultView;
+            
             }
             catch
             {
@@ -88,7 +90,7 @@ namespace POS
         {
             try
             {
-                Payment o = new Payment(Transactions_Types.Cust, ((DataRowView)Income_DG.SelectedItem)["trs_id"]);
+                Payment o = new Payment(Transactions_Types.Cust, ((DataRowView)Income_DG.SelectedItem)["pay_id"]);
                 o.ShowDialog();
                 Fill_DG();
             }
@@ -105,8 +107,8 @@ namespace POS
             {
                 if(Message.Show("هل تريد الحذف", MessageBoxButton.YesNoCancel, 5) == MessageBoxResult.Yes)
                 {
-                    DB d = new DB("transactions");
-                    d.AddCondition("trs_id", ((DataRowView)Income_DG.SelectedItem)["trs_id"]);
+                    DB d = new DB("payments");
+                    d.AddCondition("pay_id", ((DataRowView)Income_DG.SelectedItem)["pay_id"]);
                     d.Delete();
                     Fill_DG();
                 }
@@ -141,7 +143,7 @@ namespace POS
         {
             try
             {
-                Payment o = new Payment(Transactions_Types.Sup, ((DataRowView)Outcome_DG.SelectedItem)["trs_id"]);
+                Payment o = new Payment(Transactions_Types.Sup, ((DataRowView)Outcome_DG.SelectedItem)["pay_id"]);
                 o.ShowDialog();
                 Fill_DG();
             }
@@ -156,8 +158,8 @@ namespace POS
             {
                 if(Message.Show("هل تريد الحذف", MessageBoxButton.YesNoCancel, 5) == MessageBoxResult.Yes)
                 {
-                    DB d = new DB("transactions");
-                    d.AddCondition("trs_id", ((DataRowView)Outcome_DG.SelectedItem)["trs_id"]);
+                    DB d = new DB("payments");
+                    d.AddCondition("pay_id", ((DataRowView)Outcome_DG.SelectedItem)["pay_id"]);
                     d.Delete();
                     Fill_DG();
                 }

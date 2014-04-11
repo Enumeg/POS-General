@@ -32,20 +32,25 @@
             </Grid.RowDefinitions>
             <Label Grid.Column="0" BorderThickness="0,2,0,0" Content="أقساط العملاء" />
             <Label Grid.Column="2" BorderThickness="0,2,0,0" Content="أقساط المورديين" />
+            
+            
             <DataGrid Grid.Column="0" Grid.Row="1" Style="{StaticResource View_DataGrid}" Name="Income_DG">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Width="Auto" Binding="{Binding Path=trs_no}" Header="الرقم"/>
-                    <DataGridTextColumn Width="Auto" Binding="{Binding Path=trs_date,StringFormat=yyyy/MM/dd}" Header="التاريخ" />
+                    <DataGridTextColumn Visibility="Collapsed" Binding="{Binding Path=pay_id}" />
+                    <DataGridTextColumn Width="Auto" Binding="{Binding Path=pay_date,StringFormat=yyyy/MM/dd}" Header="التاريخ" />
                     <DataGridTextColumn Width="Auto" Binding="{Binding Path=per_name}" Header="العميل" FontFamily="Droid Arabic Naskh"/>
-                    <DataGridTextColumn Width="Auto" Binding="{Binding Path=trs_paid}" Header="المدفوع" />
+                    <DataGridTextColumn Width="Auto" Binding="{Binding Path=pay_value}" Header="المدفوع" />
                 </DataGrid.Columns>
             </DataGrid>
+            
+            
+            
             <DataGrid Grid.Column="2" Grid.Row="1" Style="{StaticResource View_DataGrid}" Name="Outcome_DG">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Width="Auto" Binding="{Binding Path=trs_no}" Header="الرقم" />
-                    <DataGridTextColumn Width="Auto" Binding="{Binding Path=trs_date,StringFormat=yyyy/MM/dd}" Header="التاريخ" />
+                    <DataGridTextColumn Visibility="Collapsed" Binding="{Binding Path=pay_id}" />
+                    <DataGridTextColumn Width="Auto" Binding="{Binding Path=pay_date,StringFormat=yyyy/MM/dd}" Header="التاريخ" />
                     <DataGridTextColumn Width="Auto" Binding="{Binding Path=per_name}" Header="المورد" FontFamily="Droid Arabic Naskh"/>
-                    <DataGridTextColumn Width="Auto" Binding="{Binding Path=trs_paid}" Header="المدفوع" />
+                    <DataGridTextColumn Width="Auto" Binding="{Binding Path=pay_value}" Header="المدفوع" />
                 </DataGrid.Columns>
             </DataGrid>
             <cc:EditPanel Grid.Column="0" Grid.Row="2" Name="Income_EP" Add="Income_EP_Add" Edit="Income_EP_Edit" Delete="Income_EP_Delete" />

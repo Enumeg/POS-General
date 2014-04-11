@@ -22,7 +22,8 @@
             <ex:DateTimePicker Grid.Column="4" Style="{StaticResource Edit_DateTimePicker}" ValueChanged="From_DTP_ValueChanged" Name="To_DTP" />
         </Grid>
         <DataGrid Grid.Row="1" Style="{StaticResource View_DataGrid}" Name="Outcome_DG">
-            <DataGrid.Columns>            
+            <DataGrid.Columns>
+                <DataGridTextColumn Visibility="Collapsed" Binding="{Binding Path=out_id}" />
                 <DataGridTextColumn Width="Auto" IsReadOnly="True" Header="التاريخ" Binding="{Binding Path=out_date,StringFormat=yyyy/MM/dd}" />               
                 <DataGridTextColumn Width="Auto" IsReadOnly="True" Header="النوع" Binding="{Binding Path=ott_name}" />
                 <!--<DataGridTextColumn Width="Auto" IsReadOnly="True" Header="المحل" Binding="{Binding Path=point}" />-->

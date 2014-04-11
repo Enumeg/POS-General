@@ -9,18 +9,18 @@
             <RowDefinition Height="35" />
             <RowDefinition Height="35" />
             <RowDefinition Height="35" />
-            <RowDefinition Height="35" />
             <RowDefinition Height="40" />
+            <!--<RowDefinition Height="40" />-->
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Style="{StaticResource Label_TextBlock}" Text="الرقم :" />
-        <TextBlock Grid.Row="1" Style="{StaticResource Label_TextBlock}" Text="التاريخ :" />
-        <TextBlock Grid.Row="2" Style="{StaticResource Label_TextBlock}" Text="القيـمـــة :" />
-        <TextBlock Grid.Row="3" Style="{StaticResource Label_TextBlock}" Text="العميل :" Name="Person_TK" />
-        <TextBox Grid.Column="1" Grid.Row="0" Style="{StaticResource Edit_TextBox}" Name="No_TB" />
-        <ex:DateTimePicker Grid.Column="1" Grid.Row="1" Name="Date_DTP" Style="{StaticResource Edit_DateTimePicker}" />
-        <TextBox Grid.Column="1" Grid.Row="2" Name="Value_TB" Style="{StaticResource Edit_TextBox}" />
-        <ComboBox Grid.Column="1" Grid.Row="3" Name="Person_CB" Style="{StaticResource Edit_ComboBox}" />
-        <CheckBox Grid.Column="0" Grid.Row="4" Name="New" Style="{StaticResource New_CheckBox}" />
-        <Button Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="1" Content="حفظ" Name="add_update_Payment" Click="add_update_Payment_Click" />
+        <!--<TextBlock Grid.Row="0" Style="{StaticResource Label_TextBlock}" Text="الرقم :" />-->
+        <TextBlock Grid.Row="0" Style="{StaticResource Label_TextBlock}" Text="التاريخ :" />
+        <TextBlock Grid.Row="1" Style="{StaticResource Label_TextBlock}" Text="القيـمـــة :" />
+        <TextBlock Grid.Row="2" Style="{StaticResource Label_TextBlock}" Text="العميل :" Name="Person_TK" />
+        <!--<TextBox Grid.Column="1" Grid.Row="0" Style="{StaticResource Edit_TextBox}" Name="No_TB" />-->
+        <ex:DateTimePicker Grid.Column="1" Grid.Row="0" Name="Date_DTP" Style="{StaticResource Edit_DateTimePicker}" />
+        <TextBox Grid.Column="1" Grid.Row="1" Name="Value_TB" Style="{StaticResource Edit_TextBox}" />
+        <ComboBox Grid.Column="1" Grid.Row="2" Name="Person_CB" Style="{StaticResource Edit_ComboBox}" />
+        <CheckBox Grid.Column="0" Grid.Row="3" Name="New" Style="{StaticResource New_CheckBox}" />
+        <Button Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="1" Content="حفظ" Name="add_update_Payment" Click="add_update_Payment_Click" />
     </Grid>
 </Window>

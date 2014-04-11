@@ -153,28 +153,7 @@ namespace POS
             }
         }
 
-        private void BTN_2_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Button btn = sender as Button;
-                if(btn.Name.StartsWith("Tab_") && !Tab_Panel.Children.Contains(btn))
-                {
-                    Close_Page(btn);
-                }
-                else if(btn.Name != Selected_Button && btn.Name.Replace("Tab_", "") != Selected_Button)
-                {
-                    if(Points_Page == null) { Points_Page = new Points(); }
-                    Frame.Navigate(Points_Page);
-                    Set_Selected(btn);
-                }
-            }
-            catch
-            {
-
-            }
-        }
-
+        
         private void BTN_3_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -220,28 +199,7 @@ namespace POS
 
         }
 
-        private void BTN_5_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Button btn = sender as Button;
-                if(btn.Name.StartsWith("Tab_") && !Tab_Panel.Children.Contains(btn))
-                {
-                    Close_Page(btn);
-                }
-                else if(btn.Name != Selected_Button && btn.Name.Replace("Tab_", "") != Selected_Button)
-                {
-                    if(Employees_Page == null) { Employees_Page = new Employees(); }
-                    Frame.Navigate(Employees_Page);
-                    Set_Selected(btn);
-                }
-            }
-            catch
-            {
-
-            }
-        }
-
+       
         private void BTN_6_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -311,27 +269,6 @@ namespace POS
             }
         }
 
-        private void BTN_12_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Button btn = sender as Button;
-                if(btn.Name.StartsWith("Tab_") && !Tab_Panel.Children.Contains(btn))
-                {
-                    Close_Page(btn);
-                }
-                else if(btn.Name != Selected_Button && btn.Name.Replace("Tab_", "") != Selected_Button)
-                {
-                    if(Bank_Page == null) { Bank_Page = new Bank_Page(); }
-                    Frame.Navigate(Bank_Page);
-                    Set_Selected(btn);
-                }
-            }
-            catch
-            {
-
-            }
-        }
 
         private void BTN_13_Click(object sender, RoutedEventArgs e)
         {
