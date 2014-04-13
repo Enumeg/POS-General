@@ -318,7 +318,6 @@ namespace POS
                     ComboBox CB = new ComboBox();
                     CB.Style = FindResource("Edit_ComboBox") as Style;
                     CB.Name = "CB_" + Prp_Id;
-                    Product.Get_Values(CB, Prp_Id, "الكل");
                     CB.IsEditable = true;
                     CB.SelectionChanged += new SelectionChangedEventHandler(ComboBox_SelectionChanged);
                     CB.Width = 120;
