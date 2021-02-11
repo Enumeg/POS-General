@@ -30,7 +30,7 @@ namespace POS
 
             Bank_Id = bank_id;
 
-            Type_CB.ItemsSource = Enum.GetValues(typeof(Bank_Types));
+            Type_CB.ItemsSource = Enum.GetValues(typeof(BankTypes));
 
             if(Bank_Id != null)
             {
@@ -54,7 +54,7 @@ namespace POS
                 DataRow DR = db2.SelectRow();
 
                 Date_TB.Value = DateTime.Parse(DR["bnk_date"].ToString());
-                Type_CB.Text = Enum.GetName(typeof(Bank_Types), int.Parse(DR["bnk_trn_id"].ToString()));
+                Type_CB.Text = Enum.GetName(typeof(BankTypes), int.Parse(DR["bnk_trn_id"].ToString()));
                 Value_TB.Text = DR["bnk_value"].ToString();
                 Description_TB.Text = DR["bnk_description"].ToString();
 

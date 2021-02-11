@@ -30,7 +30,7 @@ namespace POS
                 Projects_Page = new Products();
                 Pages_Page = new Outcome_Page();
                 Tasks_Page = new Propertiess();
-                Users_Page = new Transactions(Transactions_Types.Buy);
+                Users_Page = new Transactions(TransactionsTypes.Buy);
             }
             catch
             {

@@ -16,11 +16,11 @@ namespace POS
     /// </summary>
     public partial class Transactions : Page
     {
-        Transactions_Types Transaction;
+        TransactionsTypes Transaction;
         DataTable Transactions_Details;
         List<string> Pro_IDS;
-        PrintDocument PD1;
-        public Transactions(Transactions_Types transaction)
+        PrintDocument PD1, PD2;
+        public Transactions(TransactionsTypes transaction)
         {
             InitializeComponent();
             Pro_IDS = new List<string>();
@@ -29,7 +29,14 @@ namespace POS
             Fill_Transactions_LB();
             Get_Transactions_Details_Table();
             PD1 = new PrintDocument();
-            PD1.PrintPage += new PrintPageEventHandler(PD1_PrintPage);          
+            PD1.DefaultPageSettings.Margins = new Margins(6, 2, 2, 0);
+            PD1.DefaultPageSettings.PaperSize = new PaperSize("User Defined", 150, 100);
+            PD1.PrintPage += new PrintPageEventHandler(PD1_PrintPage);
+            PD2 = new PrintDocument();
+            PD2.DefaultPageSettings.Margins = new Margins(5, 5, 5, 0);
+            PaperSize pz = new PaperSize("User Defined", 280, 120);
+            PD2.DefaultPageSettings.PaperSize = pz;
+            PD2.PrintPage += new PrintPageEventHandler(PD2_PrintPage);
             Initialize_Page();
         }
 
@@ -37,52 +44,54 @@ namespace POS
         {
             try
             {
-                if (Transaction == Transactions_Types.Buy)
+                if(Transaction == TransactionsTypes.Buy)
                 {
                     Totals_GD.ColumnDefinitions[6].Width = new GridLength(1, GridUnitType.Star);
                 }
-                switch (Transaction)
+                switch(Transaction)
                 {
-                    case Transactions_Types.Buy:
-                    case Transactions_Types.Buy_Back:
+                    case TransactionsTypes.Buy:
+                    case TransactionsTypes.BuyBack:
                         Search_var1_TK.Text = var1_TK.Text = "المــــــورد :";
                         Search_var2_TK.Text = var2_TK.Text = "المخـــزن :";
                         Customers.Get_All_Customers(Search_var1_CB, "Suppliers", "الكل");
                         Customers.Get_All_Customers(Var1_CB, "Suppliers");
-                        //Points.Get_All_Points(Search_var2_CB, 1, "الكل");
-                        //Points.Get_All_Points(Var2_CB);
+                        Points.Get_All_Points(Search_var2_CB, 1, "الكل");
+                        Points.Get_All_Points(Var2_CB);
                         Price_TB.IsReadOnly = false;
                         break;
-                    case Transactions_Types.Sell:
-                    case Transactions_Types.Sell_Back:
+                    case TransactionsTypes.Sell:
+                    case TransactionsTypes.SellBack:
                         Search_var1_TK.Text = var1_TK.Text = "العميـــــل :";
                         Search_var2_TK.Text = var2_TK.Text = "المعرض :";
                         Customers.Get_All_Customers(Search_var1_CB, "customers", "الكل");
                         Customers.Get_All_Customers(Var1_CB, "customers");
-                        //Points.Get_All_Points(Search_var2_CB, 2, "الكل");
-                        //Points.Get_All_Points(Var2_CB);
+                        Points.Get_All_Points(Search_var2_CB, 2, "الكل");
+                        Points.Get_All_Points(Var2_CB);
+                        DC5.Visibility = System.Windows.Visibility.Visible;
                         Edit_GD.ColumnDefinitions[4].Width = new GridLength(100);
+                        Totals_GD.ColumnDefinitions[7].Width = new GridLength(1, GridUnitType.Star);
                         break;
-                    case Transactions_Types.Transfer:
+                    case TransactionsTypes.Transfer:
                         Search_var1_TK.Text = var1_TK.Text = "مـــــــــــــــــن :";
                         Search_var2_TK.Text = var2_TK.Text = "إلــــــــــــــــى :";
-                        //Points.Get_All_Points(Search_var1_CB, 0, "الكل");
-                        //Points.Get_All_Points(Var1_CB);
-                        //Points.Get_All_Points(Search_var2_CB, 0, "الكل");
-                        //Points.Get_All_Points(Var2_CB);
+                        Points.Get_All_Points(Search_var1_CB, 0, "الكل");
+                        Points.Get_All_Points(Var1_CB);
+                        Points.Get_All_Points(Search_var2_CB, 0, "الكل");
+                        Points.Get_All_Points(Var2_CB);
                         Totals_GD.ColumnDefinitions[2].Width = Totals_GD.ColumnDefinitions[3].Width = Totals_GD.ColumnDefinitions[4].Width = Totals_GD.ColumnDefinitions[5].Width = new GridLength(0);
                         break;
-                    case Transactions_Types.Depreciation:
+                    case TransactionsTypes.Depreciation:
                         Search_var1_TK.Text = var1_TK.Text = "مـــــــــــــــــن :";
                         Search_GD.RowDefinitions[3].Height = new GridLength(0);
                         Info_GD.ColumnDefinitions[6].Width = Info_GD.ColumnDefinitions[7].Width = new GridLength(0);
                         Totals_GD.ColumnDefinitions[2].Width = Totals_GD.ColumnDefinitions[3].Width = Totals_GD.ColumnDefinitions[4].Width = Totals_GD.ColumnDefinitions[5].Width = new GridLength(0);
 
-                        //Points.Get_All_Points(Search_var1_CB, 0, "الكل");
-                        //Points.Get_All_Points(Var1_CB);
+                        Points.Get_All_Points(Search_var1_CB, 0, "الكل");
+                        Points.Get_All_Points(Var1_CB);
                         break;
                 }
-                if (App.Group_ID.ToString() == "2")
+                if(App.GroupId.ToString() == "2")
                 {
                     Main_GD.ColumnDefinitions[0].Width = new GridLength(0);
                     View_GD.RowDefinitions[4].Height = new GridLength(35);
@@ -93,6 +102,8 @@ namespace POS
                     Details_DG.ItemsSource = null;
                     Transactions_Details.Rows.Clear();
                     Get_New_No();
+                    DC3.IsReadOnly = false;
+                    Totals_GD.ColumnDefinitions[7].Width = new GridLength(0);
                 }
 
             }
@@ -108,11 +119,11 @@ namespace POS
             {
                 DB DB = new DB();
                 DB.AddCondition("trd_trs_id", Transactions_LB.SelectedValue);
-                DataTable dt = DB.SelectTable(@"select trd_pro_id,pro_name,trd_amount,trd_price,trd_amount*trd_price trd_total
+                DataTable dt = DB.SelectTable(@"select trd_pro_id,pro_name,trd_amount,trd_price,trd_discount,trd_amount*trd_discount trd_total,trd_serial
                                                             from transactions_Details join products on pro_id=trd_pro_id");
                 Transactions_Details.Rows.Clear();
                 Pro_IDS.Clear();
-                foreach (DataRow row in dt.Rows)
+                foreach(DataRow row in dt.Rows)
                 {
                     Transactions_Details.Rows.Add(row.ItemArray);
                     Pro_IDS.Add(row["trd_pro_id"].ToString());
@@ -134,7 +145,9 @@ namespace POS
                 Transactions_Details.Columns.Add("trd_pro_name");
                 Transactions_Details.Columns.Add("trd_amount");
                 Transactions_Details.Columns.Add("trd_price");
+                Transactions_Details.Columns.Add("trd_discount");
                 Transactions_Details.Columns.Add("trd_total");
+                Transactions_Details.Columns.Add("trd_serial");
             }
             catch
             {
@@ -152,7 +165,7 @@ namespace POS
                 DB.AddCondition("trs_no", Search_No_TB.Text, Search_No_TB.Text == "", " like ");
                 DB.AddCondition("trs_id_1", Search_var1_CB.SelectedValue, Search_var1_CB.SelectedIndex < 1);
                 DB.AddCondition("trs_id_2", Search_var2_CB.SelectedValue, Search_var2_CB.SelectedIndex < 1);
-                if (Search_Date_DTP.Value != null) { DB.AddCondition("trs_date", Search_Date_DTP.Value.Value.Date); }
+                if(Search_Date_DTP.Value != null) { DB.AddCondition("trs_date", Search_Date_DTP.Value.Value.Date); }
                 DB.Fill(Transactions_LB, "trs_id", "trs_no", @"select * from transactions ");
             }
             catch
@@ -197,16 +210,48 @@ namespace POS
             }
         }
 
+        private void Get_Product()
+        {
+            try
+            {
+                if(Serial_TB.Text.Length > 4)
+                {
+                    object pro_id;
+                    DB d = new DB();
+                    d.AddCondition("trd_serial", Serial_TB.Text);
+                    if(Transaction == TransactionsTypes.Buy)
+                    {
+                        pro_id = d.Select(@"SELECT pro_id FROM products where pro_serial=@trd_serial ").ToString();
+                    }
+                    else
+                    {
+                        pro_id = d.Select(@"SELECT trd_pro_id FROM transactions_details ").ToString();
+                    }
+
+                    if(Product_CB.SelectedValue == null || Product_CB.SelectedValue.ToString() != pro_id.ToString()) { Product_CB.SelectedValue = pro_id; }
+                    if(Product_CB.SelectedIndex != -1) { Amount_TB.Focus(); }
+                }
+                else
+                {
+                    Product_CB.SelectedIndex = -1;
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
         private void Get_Total()
         {
             decimal total = 0;
             try
             {
-                foreach (DataRow row in Transactions_Details.Rows)
+                foreach(DataRow row in Transactions_Details.Rows)
                 {
                     total += decimal.Parse(row["trd_total"].ToString());
                 }
-                if (Paid_TB.Text == Total_TB.Text)
+                if(Paid_TB.Text == Total_TB.Text)
                 {
                     Total_TB.Text = Paid_TB.Text = total.ToString("0.00");
                 }
@@ -222,6 +267,37 @@ namespace POS
             {
 
             }
+        }
+
+        private string Get_Serial()
+        {
+            string serial = "";
+
+            try
+            {
+                DB d = new DB();
+                d.AddCondition("trd_pro_id", Product_CB.SelectedValue);
+                var ser = d.Select(@"SELECT trd_serial FROM transactions_details JOIN transactions ON trd_trs_id=trs_id
+                                     WHERE trs_trn_id=1 AND trd_pro_id=@trd_pro_id AND trs_date = (
+                                     SELECT MAX(trs_date) FROM transactions join transactions_details ON trd_trs_id=trs_id
+                                     WHERE trs_trn_id=1 AND trd_pro_id=@trd_pro_id)");
+                //if(ser == null)
+                //{
+                //    serial = ((DataRowView)Product_CB.SelectedItem)["pro_serial"].ToString() + "-0001";
+                //}
+                //else
+                //{
+                //    serial = ser.ToString();
+                //    serial = (int.Parse(serial.Replace("-", "")) + 1).ToString();
+                //    serial = serial.Insert(5, "-");
+                //}
+                serial = ((DataRowView) Product_CB.SelectedItem)["pro_serial"].ToString();
+            }
+            catch
+            {
+
+            }
+            return serial;
         }
 
         private bool Add_Update()
@@ -244,13 +320,15 @@ namespace POS
                 DB2.Table.Columns.Add("trd_pro_id");
                 DB2.Table.Columns.Add("trd_amount");
                 DB2.Table.Columns.Add("trd_price");
-                foreach (DataRow row in Transactions_Details.Rows)
+                DB2.Table.Columns.Add("trd_discount");
+                DB2.Table.Columns.Add("trd_serial");
+                foreach(DataRow row in Transactions_Details.Rows)
                 {
-                    DB2.Table.Rows.Add(DB1, row["trd_pro_id"], row["trd_amount"], row["trd_price"]);
+                    DB2.Table.Rows.Add(DB1, row["trd_pro_id"], row["trd_amount"], row["trd_price"], row["trd_discount"], row["trd_serial"]);
                 }
-                if (Transactions_LB.SelectedValue == null)
+                if(Transactions_LB.SelectedValue == null)
                 {
-                    if (DB1.IsNotExist("trs_id", "trs_no", "trs_trn_id", "trs_id_1", "trs_id_2"))
+                    if(DB1.IsNotExist("trs_id", "trs_no", "trs_trn_id", "trs_id_1", "trs_id_2"))
                     {
                         return DB1.Execute_Queries(DB1, DB2);
                     }
@@ -290,8 +368,8 @@ namespace POS
                 Details_DG.ItemsSource = null;
                 Transactions_Details.Rows.Clear();
                 Get_New_No();
-                //DC3.IsReadOnly = DC4.IsReadOnly = false;
-                //Serial_TB.Focus();
+                DC3.IsReadOnly = DC4.IsReadOnly = false;
+                Serial_TB.Focus();
             }
             catch
             {
@@ -303,7 +381,7 @@ namespace POS
         {
             try
             {
-                if (Transactions_LB.SelectedIndex != -1)
+                if(Transactions_LB.SelectedIndex != -1)
                 {
                     Details_DG.ColumnHeaderHeight = 62;
                     Details_GD.RowDefinitions[1].Height = new GridLength(28);
@@ -311,8 +389,8 @@ namespace POS
                     View_GD.RowDefinitions[3].Height = new GridLength(35);
                     Form.Set_Style(Info_GD, Operations.Edit);
                     Form.Set_Style(Totals_GD, Operations.Edit);
-                    //DC3.IsReadOnly = DC4.IsReadOnly = false;
-                    //Serial_TB.Focus();
+                    DC3.IsReadOnly = DC4.IsReadOnly = false;
+                    Serial_TB.Focus();
                 }
             }
             catch
@@ -325,10 +403,10 @@ namespace POS
         {
             try
             {
-                if (Transactions_LB.SelectedIndex != -1)
+                if(Transactions_LB.SelectedIndex != -1)
                 {
 
-                    if (Message.Show("هل تريد الحذف", MessageBoxButton.YesNoCancel, 5) == MessageBoxResult.Yes)
+                    if(Message.Show("هل تريد الحذف", MessageBoxButton.YesNoCancel, 5) == MessageBoxResult.Yes)
                     {
                         DB DB1 = new DB("transactions");
                         DB1.AddCondition("trs_id", Transactions_LB.SelectedValue);
@@ -350,7 +428,7 @@ namespace POS
         {
             try
             {
-                if (Confirm.Check(Add_Update()))
+                if(Confirm.Check(Add_Update()))
                 {
                     Details_DG.ColumnHeaderHeight = 32;
                     Details_GD.RowDefinitions[1].Height = new GridLength(0);
@@ -365,10 +443,10 @@ namespace POS
                     Pro_IDS.Clear();
                     Fill_Transactions_LB();
                     Transactions_LB.SelectedIndex = i;
-                    //DC3.IsReadOnly = DC4.IsReadOnly = true;
-                    if (Transaction == Transactions_Types.Sell || Transaction == Transactions_Types.Sell_Back)
+                    DC3.IsReadOnly = DC4.IsReadOnly = true;
+                    if(Transaction == TransactionsTypes.Sell || Transaction == TransactionsTypes.SellBack)
                     {
-                        if (Message.Show("هل تريد طباعة فاتورة", MessageBoxButton.YesNo) == MessageBoxResult.Yes) { PD1.Print(); }
+                        if(Message.Show("هل تريد طباعة فاتورة", MessageBoxButton.YesNo) == MessageBoxResult.Yes) { Print_Bill(); }
                     }
                 }
             }
@@ -390,7 +468,7 @@ namespace POS
                 Form.Set_Style(Totals_GD, Operations.View);
                 Transactions_Details.Rows.Clear();
                 Pro_IDS.Clear();
-                //DC3.IsReadOnly = DC4.IsReadOnly = true;
+                DC3.IsReadOnly = DC4.IsReadOnly = true;
             }
             catch
             {
@@ -446,35 +524,41 @@ namespace POS
             }
         }
 
+        private void Serial_TB_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                Get_Product();
+            }
+            catch
+            {
+
+            }
+        }
 
         private void Product_CB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
-                if (Product_CB.SelectedIndex == 0)
+                if(Product_CB.SelectedIndex == 0)
                 {
                     Products_Search p = new Products_Search();
                     p.ShowDialog();
                     Products.Get_All_Products(Product_CB, "البحث");
-                    if (Products_Search.pro_id != null)
-                    {
-                        Product_CB.SelectedValue = Products_Search.pro_id;
-                    }
-                    else
-                    {
-                        Product_CB.SelectedIndex = -1;
-                    }
+                    Product_CB.SelectedValue = Products_Search.pro_id;
                 }
                 else
                 {
-                    if ((int)Transaction > 2)
+                    if((int)Transaction > 2)
                     {
                         Price_TB.Text = ((DataRowView)Product_CB.SelectedItem)["pro_sell"].ToString();
                     }
                     else
                     {
                         e.Handled = true;
-                        Get_Product_Price();                       
+                        Get_Product_Price();
+                        string serial = ((DataRowView)Product_CB.SelectedItem)["pro_serial"].ToString();
+                        if(Serial_TB.Text != serial) { Serial_TB.Text = serial; }
                     }
                 }
             }
@@ -488,7 +572,7 @@ namespace POS
         {
             try
             {
-                if (Date_DTP.Style != FindResource("View_DateTimePicker") as Style && Transactions_LB.SelectedIndex == -1)
+                if(Date_DTP.Style != FindResource("View_DateTimePicker") as Style && Transactions_LB.SelectedIndex == -1)
                 {
                     Get_New_No();
                 }
@@ -502,32 +586,39 @@ namespace POS
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             try
-            {                
+            {
+                string serial = Serial_TB.Text;
                 int index = -1;
-                if ((int)Transaction > 1)
+                if((int)Transaction > 1)
                 {
-                    if (Notify.validate("من فضلك ادخل سعر الشراء", Price_TB.Text, Main.GetWindow(this))) { return; }
-                }               
-                if (Notify.validate("من فضلك اختار الصنف", Product_CB.SelectedIndex, Main.GetWindow(this))) { return; }
-                if (Notify.validate("من فضلك ادخل الكمية", Amount_TB.Text, Main.GetWindow(this))) { return; }
+                    if(Notify.validate("من فضلك أدخل السريال", Serial_TB.Text, Main.GetWindow(this))) { return; }
+                    if(Notify.validate("من فضلك ادخل سعر الشراء", Price_TB.Text, Main.GetWindow(this))) { return; }
+                }
+                else
+                {
+                    serial = Get_Serial();
+                }
+                if(Notify.validate("من فضلك اختار الصنف", Product_CB.SelectedIndex, Main.GetWindow(this))) { return; }
+                if(Notify.validate("من فضلك ادخل الكمية", Amount_TB.Text, Main.GetWindow(this))) { return; }
                 index = Pro_IDS.IndexOf(Product_CB.SelectedValue.ToString());
-                if (index != -1)
+                if(index != -1)
                 {
-                    Transactions_Details.Rows[index]["trd_amount"] = decimal.Parse(Transactions_Details.Rows[index]["trd_amount"].ToString()) + decimal.Parse(Amount_TB.Text);
+                    Transactions_Details.Rows[index]["trd_amount"] = decimal.Parse(Transactions_Details.Rows[index]["trd_amount"].ToString()) + 1;
                     Transactions_Details.Rows[index]["trd_total"] = decimal.Parse(Transactions_Details.Rows[index]["trd_amount"].ToString()) *
-                                                                    decimal.Parse(Transactions_Details.Rows[index]["trd_price"].ToString());
+                                                                    decimal.Parse(Transactions_Details.Rows[index]["trd_discount"].ToString());
 
                 }
                 else
                 {
-                    Transactions_Details.Rows.Add(Product_CB.SelectedValue, Product_CB.Text, Amount_TB.Text, Price_TB.Text, decimal.Parse(Amount_TB.Text) * decimal.Parse(Price_TB.Text));
+                    Transactions_Details.Rows.Add(Product_CB.SelectedValue, Product_CB.Text, Amount_TB.Text, Price_TB.Text, Discount_TB.Text, decimal.Parse(Amount_TB.Text) * decimal.Parse(Discount_TB.Text), serial);
                     Pro_IDS.Add(Product_CB.SelectedValue.ToString());
                 }
                 Details_DG.ItemsSource = Transactions_Details.DefaultView;
-                Price_TB.Text = "";
+                Serial_TB.Text = Price_TB.Text = "";
                 Amount_TB.Text = "1";
                 Product_CB.SelectedIndex = -1;
-                Get_Total();               
+                Get_Total();
+                Serial_TB.Focus();
             }
             catch
             {
@@ -539,7 +630,7 @@ namespace POS
         {
             try
             {
-                if (e.Key == Key.Delete)
+                if(e.Key == Key.Delete)
                 {
                     Pro_IDS.RemoveAt(Details_DG.SelectedIndex);
                     Transactions_Details.Rows.RemoveAt(Details_DG.SelectedIndex);
@@ -558,7 +649,7 @@ namespace POS
             try
             {
                 int index = Details_DG.SelectedIndex;
-                if (e.Column.DisplayIndex == 3)
+                if(e.Column.DisplayIndex == 3)
                 {
                     Transactions_Details.Rows[index]["trd_discount"] = ((TextBox)Details_DG.Columns[3].GetCellContent(e.Row)).Text;
                     Transactions_Details.Rows[index]["trd_total"] = decimal.Parse(((TextBox)Details_DG.Columns[3].GetCellContent(e.Row)).Text) *
@@ -583,15 +674,42 @@ namespace POS
         {
             try
             {
+                short Amount = short.Parse(((DataRowView)Details_DG.SelectedItem)["trd_amount"].ToString());
+                double re = Amount / 2.0;
+                PD1.PrinterSettings.Copies = Math.Floor(re) - re != 0 ? (short)((Amount + 1) / 2) : (short)(Amount / 2);
                 PD1.Print();
             }
             catch
             {
 
             }
-        }       
+        }
 
         private void PD1_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            DataRowView Product = Details_DG.SelectedItem as DataRowView;
+            StringFormat sf = new StringFormat(StringFormatFlags.DirectionRightToLeft);
+            sf.Alignment = StringAlignment.Near;
+            sf.LineAlignment = StringAlignment.Near;
+            StringFormat sf1 = new StringFormat();
+            sf1.Alignment = StringAlignment.Far;
+            sf1.LineAlignment = StringAlignment.Near;
+
+            System.Drawing.Size s = e.Graphics.MeasureString(Product["trd_pro_name"].ToString(), new System.Drawing.Font("Arial", 6, System.Drawing.FontStyle.Bold)).ToSize();
+
+            e.Graphics.DrawString("Shalaby Trade", new System.Drawing.Font("Cambria", 8, System.Drawing.FontStyle.Bold), System.Drawing.Brushes.Black, e.MarginBounds.Left, e.MarginBounds.Top + 3);
+            e.Graphics.DrawString("*" + Product["trd_serial"].ToString() + "*", new System.Drawing.Font("Bar-Code 39", 12), System.Drawing.Brushes.Black, e.MarginBounds.Right, e.MarginBounds.Top + 16, sf1);
+            e.Graphics.DrawString(Product["trd_pro_name"].ToString(), new System.Drawing.Font("Arial", 6, System.Drawing.FontStyle.Bold), System.Drawing.Brushes.Black, e.MarginBounds.Left, e.MarginBounds.Top + 36);
+            e.Graphics.DrawString(Get_Price(Product["trd_pro_id"]), new System.Drawing.Font("Tahoma", 6, System.Drawing.FontStyle.Bold), System.Drawing.Brushes.Black, e.MarginBounds.Right, e.MarginBounds.Top + 36, sf);
+
+            e.Graphics.DrawString("Shalaby Trade", new System.Drawing.Font("Cambria", 8, System.Drawing.FontStyle.Bold), System.Drawing.Brushes.Black, e.MarginBounds.Left, e.MarginBounds.Top + 52);
+            e.Graphics.DrawString("*" + Product["trd_serial"].ToString() + "*", new System.Drawing.Font("Bar-Code 39", 12), System.Drawing.Brushes.Black, e.MarginBounds.Right, e.MarginBounds.Top + 65, sf1);
+            e.Graphics.DrawString(Product["trd_pro_name"].ToString(), new System.Drawing.Font("Arial", 6, System.Drawing.FontStyle.Bold), System.Drawing.Brushes.Black, e.MarginBounds.Left, e.MarginBounds.Top + 85);
+            e.Graphics.DrawString(Get_Price(Product["trd_pro_id"]), new System.Drawing.Font("Tahoma", 6, System.Drawing.FontStyle.Bold), System.Drawing.Brushes.Black, e.MarginBounds.Right, e.MarginBounds.Top + 85, sf);
+
+        }
+
+        private void PD2_PrintPage(object sender, PrintPageEventArgs e)
         {
             DataRowView Product = Details_DG.SelectedItem as DataRowView;
             StringFormat sf = new StringFormat();
@@ -626,12 +744,12 @@ namespace POS
             current_height += 22;
             e.Graphics.DrawLine(new Pen(Brushes.Black), e.MarginBounds.Left, current_height, e.MarginBounds.Right, current_height);
             current_height += 5;
-            foreach (DataRowView row in (DataView)Details_DG.ItemsSource)
+            foreach(DataRowView row in (DataView)Details_DG.ItemsSource)
             {
                 temp_height = e.Graphics.MeasureString(row["trd_pro_name"].ToString(), new System.Drawing.Font("Arial", 8), e.MarginBounds.Width - 120).Height;
                 temp_height = temp_height < 20 ? 15 : 30;
                 e.Graphics.DrawString(row["trd_pro_name"].ToString(), new System.Drawing.Font("Arial", 8), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width + 120, current_height, e.MarginBounds.Width - 120, temp_height), sf1);
-                e.Graphics.DrawString(row["trd_price"].ToString(), new System.Drawing.Font("Tahoma", 7), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width + 80, current_height, 40, temp_height), sf2);
+                e.Graphics.DrawString(row["trd_discount"].ToString(), new System.Drawing.Font("Tahoma", 7), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width + 80, current_height, 40, temp_height), sf2);
                 e.Graphics.DrawString(row["trd_amount"].ToString(), new System.Drawing.Font("Tahoma", 7), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width + 50, current_height, 30, temp_height), sf2);
                 e.Graphics.DrawString(row["trd_total"].ToString(), new System.Drawing.Font("Tahoma", 7), System.Drawing.Brushes.Black, new RectangleF(e.MarginBounds.Right - e.MarginBounds.Width, current_height, 50, temp_height), sf2);
                 current_height += temp_height;
@@ -660,13 +778,25 @@ namespace POS
             return Price;
         }
 
+        private void Price_TB_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                Discount_TB.Text = Price_TB.Text;
+            }
+            catch
+            {
+
+            }
+        }
+
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            if (Confirm.Check(Add_Update()))
+            if(Confirm.Check(Add_Update()))
             {
-                if (Transaction == Transactions_Types.Sell || Transaction == Transactions_Types.Sell_Back)
+                if(Transaction == TransactionsTypes.Sell || Transaction == TransactionsTypes.SellBack)
                 {
-                    if (Message.Show("هل تريد طباعة فاتورة", MessageBoxButton.YesNo) == MessageBoxResult.Yes) { Print_Bill(); }
+                    if(Message.Show("هل تريد طباعة فاتورة", MessageBoxButton.YesNo) == MessageBoxResult.Yes) { Print_Bill(); }
                 }
                 Get_Transactions_Details_Table();
                 Transactions_Details.Rows.Clear();
@@ -707,21 +837,21 @@ namespace POS
         {
             try
             {
-                //Bitmap b = new Bitmap(280, 120);
-                //Graphics g = Graphics.FromImage(b);
+                Bitmap b = new Bitmap(280, 120);
+                Graphics g = Graphics.FromImage(b);
 
-                //float height = 192;
-                //float temp_height = 0;
-                //foreach (DataRowView row in (DataView)Details_DG.ItemsSource)
-                //{
-                //    temp_height = g.MeasureString(row["trd_pro_name"].ToString(), new System.Drawing.Font("Arial", 8), PD2.DefaultPageSettings.PaperSize.Width - 135).Height;
-                //    temp_height = temp_height < 20 ? 15 : 30;
-                //    height += temp_height;
+                float height = 192;
+                float temp_height = 0;
+                foreach(DataRowView row in (DataView)Details_DG.ItemsSource)
+                {
+                    temp_height = g.MeasureString(row["trd_pro_name"].ToString(), new System.Drawing.Font("Arial", 8), PD2.DefaultPageSettings.PaperSize.Width - 135).Height;
+                    temp_height = temp_height < 20 ? 15 : 30;
+                    height += temp_height;
 
-                //}
+                }
 
-                //PD2.DefaultPageSettings.PaperSize.Height = Convert.ToInt32(height);
-                //PD2.Print();
+                PD2.DefaultPageSettings.PaperSize.Height = Convert.ToInt32(height);
+                PD2.Print();
             }
             catch
             {

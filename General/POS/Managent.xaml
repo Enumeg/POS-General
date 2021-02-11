@@ -18,11 +18,14 @@
             </Frame>
             <WrapPanel Name="Tab_Panel" Margin="0,2,0,0">
                 <Button Style="{StaticResource Closed_Tab}" Click="BTN_1_Click" Name="Tab_BTN_1" Content="الأصناف" />
+                <Button Style="{StaticResource Closed_Tab}" Click="BTN_2_Click" Name="Tab_BTN_2" Content="نقاط البيع" />
                 <Button Style="{StaticResource Closed_Tab}" Click="BTN_3_Click" Name="Tab_BTN_3" Content="الموردين" />
                 <Button Style="{StaticResource Closed_Tab}" Click="BTN_4_Click" Name="Tab_BTN_4" Content="العملاء" />
+                <Button Style="{StaticResource Closed_Tab}" Click="BTN_5_Click" Name="Tab_BTN_5" Content="الموظفين" />
                 <Button Style="{StaticResource Closed_Tab}" Click="BTN_6_Click" Name="Tab_BTN_6" Content="المستخدمين" />
                 <Button Style="{StaticResource Closed_Tab}" Click="BTN_10_Click" Name="Tab_BTN_10" Content="الإيرادات" />
                 <Button Style="{StaticResource Closed_Tab}" Click="BTN_11_Click" Name="Tab_BTN_11" Content="المصروفات" />
+                <Button Style="{StaticResource Closed_Tab}" Click="BTN_12_Click" Name="Tab_BTN_12" Content="البنك" />
                 <Button Style="{StaticResource Closed_Tab}" Click="BTN_13_Click" Name="Tab_BTN_13" Content="الأقساط" />
                 <Button Style="{StaticResource Closed_Tab}" Click="BTN_14_Click" Name="Tab_BTN_14" Content="فواتير الشراء" />
                 <Button Style="{StaticResource Closed_Tab}" Click="BTN_15_Click" Name="Tab_BTN_15" Content="مرتجع الشراء" />
@@ -39,8 +42,10 @@
                         <Expander Header="البيانات" Style="{StaticResource EXP}" Name="Data_EXP" >
                             <StackPanel Name="exp">
                                 <Button Style="{StaticResource Side}" Click="BTN_1_Click" Name="BTN_1" Content="الأصناف" Tag="/POS;component/Images/Text-columns.ico" />
+                                <Button Style="{StaticResource Side}" Click="BTN_2_Click" Name="BTN_2" Content="نقاط البيع" Tag="/POS;component/Images/Store.ico" />
                                 <Button Style="{StaticResource Side}" Click="BTN_3_Click" Name="BTN_3" Content="الموردين" Tag="/POS;component/Images/speaker2.ico" />
                                 <Button Style="{StaticResource Side}" Click="BTN_4_Click" Name="BTN_4" Content="العملاء" Tag="/POS;component/Images/box.ico" />
+                                <Button Style="{StaticResource Side}" Click="BTN_5_Click" Name="BTN_5" Content="الموظفين" Tag="/POS;component/Images/System.png" />
                                 <Button Style="{StaticResource Side}" Click="BTN_6_Click" Name="BTN_6" Content="المستخدمين" Tag="/POS;component/Images/order.ico" />
                             </StackPanel>
                         </Expander>
@@ -48,6 +53,7 @@
                             <StackPanel>
                                 <Button Style="{StaticResource Side}" Click="BTN_10_Click" Name="BTN_10" Content="الإيرادات" Tag="/POS;component/Images/2.ico" />
                                 <Button Style="{StaticResource Side}" Click="BTN_11_Click" Name="BTN_11" Content="المصروفات" Tag="/POS;component/Images/Docuite.ico" />
+                                <Button Style="{StaticResource Side}" Click="BTN_12_Click" Name="BTN_12" Content="البنك" Tag="/POS;component/Images/Text-columns.ico" />
                                 <Button Style="{StaticResource Side}" Click="BTN_13_Click" Name="BTN_13" Content="الأقساط" Tag="/POS;component/Images/Store.ico" />
                             </StackPanel>
                         </Expander>

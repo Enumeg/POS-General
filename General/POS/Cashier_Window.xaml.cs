@@ -25,8 +25,8 @@ namespace POS
         {
             try
             {
-                Sell_Page = new Transactions(Transactions_Types.Sell);
-                Sell_Back_Page = new Transactions(Transactions_Types.Sell_Back); ;
+                Sell_Page = new Transactions(TransactionsTypes.Sell);
+                Sell_Back_Page = new Transactions(TransactionsTypes.SellBack); ;
                 Outcome_Page = new Outcome_Page();
             }
             catch

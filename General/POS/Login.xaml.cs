@@ -31,8 +31,8 @@ namespace POS
                     if(Password_TB.Password.GetHashCode().ToString() == User["user_pass"].ToString())
                     {
                         //set global variables
-                        App.User_Id = User["User_Id"];
-                        App.Group_ID = User["user_grp_id"];
+                        App.UserId = User["User_Id"];
+                        App.GroupId = User["user_grp_id"];
                         //start application
                         Window m = new Window();
                         //check privileges
@@ -101,7 +101,7 @@ namespace POS
                     if(Password_TB.Password.GetHashCode().ToString() == User["user_pass"].ToString())
                     {
                         //set global variables
-                        App.User_Id = User["User_Id"];
+                        App.UserId = User["User_Id"];
                         //open change password window
                         User u = new User(Edit_Mode.Change_Password, User["User_Id"]);
                         this.Hide();

@@ -55,7 +55,8 @@ namespace POS
                 DB db2 = new DB();
                 db2.AddCondition("out_date", From_DTP.Value.Value.Date, false, ">=", "SD");
                 db2.AddCondition("out_date", To_DTP.Value.Value.Date, false, "<=", "ED");
-                DataTable dt = db2.SelectTable(@"select * from outcome o join outcome_types ot on o.out_ott_id=ot.ott_id where out_date>=@SD and out_date<=@ED");
+                DataTable dt = db2.SelectTable(@"select * from outcome outt join outcome_types outtt on outt.out_ott_id=outtt.ott_id
+                                                  left join points pon on pon.pon_id=outt.out_pon_id");
                 dt.Rows.Add(null, null,  dt.Compute("Sum(out_value)", ""), "الاجمالى");
 
                 Outcome_DG.ItemsSource = dt.DefaultView;
@@ -84,7 +85,7 @@ namespace POS
         {
             try
             {
-                Outcome o = new Outcome(((DataRowView)Outcome_DG.SelectedItem)["out_id"]);
+                Outcome o = new Outcome(((DataRowView)Outcome_DG.SelectedItem)["id"]);
                 o.ShowDialog();
                 Fill_Outcome();
             }
@@ -100,7 +101,7 @@ namespace POS
                 if(Message.Show("هل تريد الحذف", MessageBoxButton.YesNoCancel, 5) == MessageBoxResult.Yes)
                 {
                     DB d = new DB("outcome");
-                    d.AddCondition("out_id", ((DataRowView)Outcome_DG.SelectedItem)["out_id"]);
+                    d.AddCondition("out_id", ((DataRowView)Outcome_DG.SelectedItem)["id"]);
                     d.Delete();
                     Fill_Outcome();
                 }

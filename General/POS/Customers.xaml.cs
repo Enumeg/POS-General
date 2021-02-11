@@ -346,58 +346,7 @@ namespace POS
         }
 
 
-        private void Fill_DG()
-        {
 
-            DB db = new DB();
-            
-            try
-            {
-
-                decimal total_payments = 0, total_bills = 0, total_paid = 0;
-
-                DataTable dt2 = new DataTable();
-
-                dt2.Columns.Add("date");
-                dt2.Columns.Add("type");
-                dt2.Columns.Add("paid_to_me");
-                dt2.Columns.Add("suppose");
-
-
-                db.AddCondition("pay_per_id", ((DataRowView)LB.SelectedItem)["per_id"]);
-                DataTable ds = db.SelectTable(@"select * from payments");
-                foreach (DataRow row2 in ds.Rows)
-                {
-                    total_payments += decimal.Parse(row2["pay_value"].ToString());
-                    dt2.Rows.Add(row2["pay_date"], row2["قسط"], row2["pay_value"], row2[" "]);
-                }
-
-
-
-                DB db2 = new DB();
-                db2.AddCondition("customer_id", LB.SelectedValue);
-                DataTable dt = db.SelectTable(@"select * from sell");
-                foreach (DataRow row in dt.Rows)
-                {
-                    total_bills += decimal.Parse(row["total"].ToString());
-                    total_paid += decimal.Parse(row["paid"].ToString());
-
-                    dt2.Rows.Add(row["date"], row["فاتوره بيع"], row["paid"], row["total"]);
-                }
-
-
-
-
-                dt2.Rows.Add("", "الرصيد", (total_bills - (total_paid + total_payments)), "");
-
-
-            }
-            catch
-            {
-                
-                
-            }
-        }
 
 
 

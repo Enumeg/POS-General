@@ -42,7 +42,7 @@ namespace POS
             ani = new DoubleAnimation(0, 1, new TimeSpan(0, 0, 0, 0, 700));
             Tab_Panel.Children.Clear();
             pages = new System.Collections.Generic.List<object>();
-            if(App.Group_ID.ToString() == "3")
+            if(App.GroupId.ToString() == "3")
             {
                 Data_EXP.Visibility = Accounts_EXP.Visibility = System.Windows.Visibility.Collapsed;
             }
@@ -153,7 +153,28 @@ namespace POS
             }
         }
 
-        
+        private void BTN_2_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Button btn = sender as Button;
+                if(btn.Name.StartsWith("Tab_") && !Tab_Panel.Children.Contains(btn))
+                {
+                    Close_Page(btn);
+                }
+                else if(btn.Name != Selected_Button && btn.Name.Replace("Tab_", "") != Selected_Button)
+                {
+                    if(Points_Page == null) { Points_Page = new Points(); }
+                    Frame.Navigate(Points_Page);
+                    Set_Selected(btn);
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
         private void BTN_3_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -199,7 +220,28 @@ namespace POS
 
         }
 
-       
+        private void BTN_5_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Button btn = sender as Button;
+                if(btn.Name.StartsWith("Tab_") && !Tab_Panel.Children.Contains(btn))
+                {
+                    Close_Page(btn);
+                }
+                else if(btn.Name != Selected_Button && btn.Name.Replace("Tab_", "") != Selected_Button)
+                {
+                    if(Employees_Page == null) { Employees_Page = new Employees(); }
+                    Frame.Navigate(Employees_Page);
+                    Set_Selected(btn);
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
         private void BTN_6_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -269,6 +311,27 @@ namespace POS
             }
         }
 
+        private void BTN_12_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Button btn = sender as Button;
+                if(btn.Name.StartsWith("Tab_") && !Tab_Panel.Children.Contains(btn))
+                {
+                    Close_Page(btn);
+                }
+                else if(btn.Name != Selected_Button && btn.Name.Replace("Tab_", "") != Selected_Button)
+                {
+                    if(Bank_Page == null) { Bank_Page = new Bank_Page(); }
+                    Frame.Navigate(Bank_Page);
+                    Set_Selected(btn);
+                }
+            }
+            catch
+            {
+
+            }
+        }
 
         private void BTN_13_Click(object sender, RoutedEventArgs e)
         {
@@ -306,7 +369,7 @@ namespace POS
                 }
                 else if(btn.Name != Selected_Button && btn.Name.Replace("Tab_", "") != Selected_Button)
                 {
-                    if(Buy_Page == null) { Buy_Page = new Transactions(Transactions_Types.Buy); }
+                    if(Buy_Page == null) { Buy_Page = new Transactions(TransactionsTypes.Buy); }
                     Frame.Navigate(Buy_Page);
                     Set_Selected(btn);
                 }
@@ -328,7 +391,7 @@ namespace POS
                 }
                 else if(btn.Name != Selected_Button && btn.Name.Replace("Tab_", "") != Selected_Button)
                 {
-                    if(Buy_Back_Page == null) { Buy_Back_Page = new Transactions(Transactions_Types.Buy_Back); }
+                    if(Buy_Back_Page == null) { Buy_Back_Page = new Transactions(TransactionsTypes.BuyBack); }
                     Frame.Navigate(Buy_Back_Page);
                     Set_Selected(btn);
                 }
@@ -350,7 +413,7 @@ namespace POS
                 }
                 else if(btn.Name != Selected_Button && btn.Name.Replace("Tab_", "") != Selected_Button)
                 {
-                    if(Sell_Page == null) { Sell_Page = new Transactions(Transactions_Types.Sell); }
+                    if(Sell_Page == null) { Sell_Page = new Transactions(TransactionsTypes.Sell); }
                     Frame.Navigate(Sell_Page);
                     Set_Selected(btn);
                 }
@@ -372,7 +435,7 @@ namespace POS
                 }
                 else if(btn.Name != Selected_Button && btn.Name.Replace("Tab_", "") != Selected_Button)
                 {
-                    if(Sell_Back_Page == null) { Sell_Back_Page = new Transactions(Transactions_Types.Sell_Back); }
+                    if(Sell_Back_Page == null) { Sell_Back_Page = new Transactions(TransactionsTypes.SellBack); }
                     Frame.Navigate(Sell_Back_Page);
                     Set_Selected(btn);
                 }
@@ -394,7 +457,7 @@ namespace POS
                 }
                 else if(btn.Name != Selected_Button && btn.Name.Replace("Tab_", "") != Selected_Button)
                 {
-                    if(Transfer_Page == null) { Transfer_Page = new Transactions(Transactions_Types.Transfer); }
+                    if(Transfer_Page == null) { Transfer_Page = new Transactions(TransactionsTypes.Transfer); }
                     Frame.Navigate(Transfer_Page);
                     Set_Selected(btn);
                 }
@@ -416,7 +479,7 @@ namespace POS
                 }
                 else if(btn.Name != Selected_Button && btn.Name.Replace("Tab_", "") != Selected_Button)
                 {
-                    if(Depreciation_Page == null) { Depreciation_Page = new Transactions(Transactions_Types.Depreciation); }
+                    if(Depreciation_Page == null) { Depreciation_Page = new Transactions(TransactionsTypes.Depreciation); }
                     Frame.Navigate(Depreciation_Page);
                     Set_Selected(btn);
                 }
